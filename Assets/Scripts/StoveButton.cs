@@ -5,14 +5,20 @@ using UnityEngine;
 public class StoveButton : MonoBehaviour
 {
     public StoveManager stove;
-    public bool isGreenButton = true; // cambiar esto según sea el verde o rojo
+    public AudioClip clickSound;
+    public bool isGreenButton = true; // Cambia esto según sea el verde o rojo
 
     public void OnButtonPressed()
     {
+        if (clickSound != null)
+        {
+            // Reproducir el sonido en el AudioSource adjunto al objeto
+            AudioSource.PlayClipAtPoint(clickSound, transform.position);
+        }
+
         if (isGreenButton)
             stove.TurnOn();
         else
             stove.TurnOff();
     }
 }
-
