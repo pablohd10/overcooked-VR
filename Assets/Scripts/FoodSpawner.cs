@@ -1,37 +1,35 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class FoodSpawner : MonoBehaviour
 {
     [Header("Prefab & Spawn Settings")]
-    [Tooltip("The food prefab to spawn when touched.")]
     public GameObject foodPrefab;
-
-    [Tooltip("Optional transform to position spawned food. If null, spawns at this object's position.")]
     public Transform spawnPoint;
-
-    [Tooltip("If true, only spawn once. If false, can spawn repeatedly.")]
     public bool spawnOnce = false;
 
     private bool hasSpawned = false;
+    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable button;
 
-    void Reset()
+    void Awake()
     {
-        // Ensure collider is trigger by default
-        Collider col = GetComponent<Collider>();
-        col.isTrigger = true;
+        button = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        button.selectEntered.AddListener(OnPressed);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnDestroy()
     {
-        // You can change the tag to match your hand/controller tag
-        if ((other.CompareTag("PlayerHand") || other.CompareTag("XRController")) && !hasSpawned)
-        {
-            SpawnFood();
-        }
+        button.selectEntered.RemoveListener(OnPressed);
     }
 
-    void SpawnFood()
+    private void OnPressed(SelectEnterEventArgs args)
+    {
+        if (hasSpawned && spawnOnce) return;
+        SpawnFood();
+    }
+
+    public void SpawnFood()
     {
         if (foodPrefab == null)
         {
@@ -43,12 +41,9 @@ public class FoodSpawner : MonoBehaviour
         Quaternion rot = spawnPoint != null ? spawnPoint.rotation : Quaternion.identity;
 
         Instantiate(foodPrefab, pos, rot);
-        hasSpawned = true;
 
+        hasSpawned = true;
         if (spawnOnce)
-        {
-            // Optional: disable this script so it won\'t spawn again
-            enabled = false;
-        }
+            button.enabled = false;
     }
 }
