@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2993397095991805547}
   m_Layer: 0
   m_Name: Tomato_Visual
-  m_TagString: Untagged
+  m_TagString: Trashable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
