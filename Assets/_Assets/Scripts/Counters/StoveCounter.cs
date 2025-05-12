@@ -1,196 +1,175 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static CuttingCounter;
 
-public class StoveCounter : BaseCounter, IHasProgress {
-
-
+public class StoveCounter : MonoBehaviour, IHasProgress
+{
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
-    public class OnStateChangedEventArgs : EventArgs {
+
+    public class OnStateChangedEventArgs : EventArgs
+    {
         public State state;
     }
 
-
-    public enum State {
+    public enum State
+    {
         Idle,
-        Frying,
-        Fried,
-        Burned,
+        Cooking,
+        Cooked,
+        Burned
     }
 
+    [Header("Cooking Settings")]
+    public float cookingTime = 5f;
+    public float burnTime = 3f;
 
-    [SerializeField] private FryingRecipeSO[] fryingRecipeSOArray;
-    [SerializeField] private BurningRecipeSO[] burningRecipeSOArray;
+    [Header("References")]
+    public Collider stoveZoneCollider;  // Trigger collider around pan area
 
+    [Header("Prefabs")]
+    public GameObject rawPrefab;
+    public GameObject cookedPrefab;
+    public GameObject burnedPrefab;
 
-    private State state;
-    private float fryingTimer;
-    private FryingRecipeSO fryingRecipeSO;
-    private float burningTimer;
-    private BurningRecipeSO burningRecipeSO;
+    private State state = State.Idle;
+    private bool isFireOn = false;
+    private bool isBurgerInZone = false;
+    private GameObject currentBurger;
+    private float timer = 0f;
 
-
-    private void Start() {
+    private void Start()
+    {
         state = State.Idle;
+        stoveZoneCollider.isTrigger = true;
+        Debug.Log("StoveCounter Start: Initialized with Idle state");
     }
 
-    private void Update() {
-        if (HasKitchenObject()) {
-            switch (state) {
-                case State.Idle:
-                    break;
-                case State.Frying:
-                    fryingTimer += Time.deltaTime;
+    private void Update()
+    {
+        Debug.Log($"Update: isFireOn={isFireOn}, isBurgerInZone={isBurgerInZone}, hasBurger={(currentBurger != null)}, state={state}, timer={timer}");
+        if (!isFireOn || !isBurgerInZone || currentBurger == null)
+            return;
 
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                        progressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
-                    });
+        timer += Time.deltaTime;
+        float duration = (state == State.Cooking ? cookingTime : burnTime);
 
-                    if (fryingTimer > fryingRecipeSO.fryingTimerMax) {
-                        // Fried
-                        GetKitchenObject().DestroySelf();
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = Mathf.Clamp01(timer / duration)
+        });
 
-                        KitchenObject.SpawnKitchenObject(fryingRecipeSO.output, this);
-
-                        state = State.Fried;
-                        burningTimer = 0f;
-                        burningRecipeSO = GetBurningRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-
-                        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                            state = state
-                        });
-                    }
-                    break;
-                case State.Fried:
-                    burningTimer += Time.deltaTime;
-
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                        progressNormalized = burningTimer / burningRecipeSO.burningTimerMax
-                    });
-
-                    if (burningTimer > burningRecipeSO.burningTimerMax) {
-                        // Fried
-                        GetKitchenObject().DestroySelf();
-
-                        KitchenObject.SpawnKitchenObject(burningRecipeSO.output, this);
-
-                        state = State.Burned;
-
-                        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                            state = state
-                        });
-
-                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                            progressNormalized = 0f
-                        });
-                    }
-                    break;
-                case State.Burned:
-                    break;
-            }
+        if (state == State.Cooking && timer >= cookingTime)
+        {
+            Debug.Log("Cooking complete: swapping to cookedPrefab");
+            SwapBurgerPrefab(cookedPrefab);
+            state = State.Cooked;
+            timer = 0f;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
+        }
+        else if (state == State.Cooked && timer >= burnTime)
+        {
+            Debug.Log("Burn complete: swapping to burnedPrefab");
+            SwapBurgerPrefab(burnedPrefab);
+            state = State.Burned;
+            timer = 0f;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
         }
     }
 
-    public override void Interact(Player player) {
-        if (!HasKitchenObject()) {
-            // There is no KitchenObject here
-            if (player.HasKitchenObject()) {
-                // Player is carrying something
-                if (HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO())) {
-                    // Player carrying something that can be Fried
-                    player.GetKitchenObject().SetKitchenObjectParent(this);
-
-                    fryingRecipeSO = GetFryingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-
-                    state = State.Frying;
-                    fryingTimer = 0f;
-
-                    OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                        state = state
-                    });
-
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                        progressNormalized = fryingTimer / fryingRecipeSO.fryingTimerMax
-                    });
-                }
-            } else {
-                // Player not carrying anything
-            }
-        } else {
-            // There is a KitchenObject here
-            if (player.HasKitchenObject()) {
-                // Player is carrying something
-                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject)) {
-                    // Player is holding a Plate
-                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO())) {
-                        GetKitchenObject().DestroySelf();
-
-                        state = State.Idle;
-
-                        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                            state = state
-                        });
-
-                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                            progressNormalized = 0f
-                        });
-                    }
-                }
-            } else {
-                // Player is not carrying anything
-                GetKitchenObject().SetKitchenObjectParent(player);
-
-                state = State.Idle;
-
-                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                    state = state
-                });
-
-                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                    progressNormalized = 0f
-                });
-            }
+    // Called by Start button
+    public void ToggleFireOn()
+    {
+        Debug.Log("ToggleFireOn called");
+        isFireOn = true;
+        if (state == State.Idle && isBurgerInZone)
+        {
+            Debug.Log("Starting cooking phase");
+            state = State.Cooking;
+            timer = 0f;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
         }
     }
 
-    private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO) {
-        FryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObjectSO);
-        return fryingRecipeSO != null;
+    // Called by Stop button
+    public void ToggleFireOff()
+    {
+        Debug.Log("ToggleFireOff called");
+        isFireOn = false;
+        // Pause progression but keep state and prefab
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Burger")) return;
 
-    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjectSO) {
-        FryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObjectSO);
-        if (fryingRecipeSO != null) {
-            return fryingRecipeSO.output;
-        } else {
-            return null;
-        }
-    }
+        Debug.Log($"OnTriggerEnter: {other.name} entered zone");
+        isBurgerInZone = true;
+        currentBurger = other.gameObject;
+        timer = 0f;
 
-    private FryingRecipeSO GetFryingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO) {
-        foreach (FryingRecipeSO fryingRecipeSO in fryingRecipeSOArray) {
-            if (fryingRecipeSO.input == inputKitchenObjectSO) {
-                return fryingRecipeSO;
+        // Determine starting state based on burger prefab
+        if (isFireOn)
+        {
+            // If prefab name contains cooked prefab name, start burn phase
+            if (currentBurger.name.Contains(cookedPrefab.name))
+            {
+                Debug.Log("Cooked burger placed: starting burn phase");
+                state = State.Cooked;
             }
-        }
-        return null;
-    }
-
-    private BurningRecipeSO GetBurningRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO) {
-        foreach (BurningRecipeSO burningRecipeSO in burningRecipeSOArray) {
-            if (burningRecipeSO.input == inputKitchenObjectSO) {
-                return burningRecipeSO;
+            else if (currentBurger.name.Contains(burnedPrefab.name))
+            {
+                Debug.Log("Burned burger placed: no further cooking");
+                state = State.Burned;
+                // No timer
+                return;
             }
+            else
+            {
+                Debug.Log("Raw burger placed: starting cook phase");
+                state = State.Cooking;
+            }
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
         }
-        return null;
+        else
+        {
+            state = State.Idle;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
+        }
     }
 
-    public bool IsFried() {
-        return state == State.Fried;
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject != currentBurger) return;
+        if (!other.CompareTag("Burger")) return;
+
+        Debug.Log("OnTriggerExit: Burger left zone");
+        isBurgerInZone = false;
+        state = State.Idle;
+        timer = 0f;
+        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { progressNormalized = 0f });
+        currentBurger = null;
     }
 
+    private void SwapBurgerPrefab(GameObject newPrefab)
+    {
+        if (currentBurger == null)
+        {
+            Debug.LogWarning("SwapBurgerPrefab called but no burger present");
+            return;
+        }
+
+        Vector3 pos = currentBurger.transform.position;
+        Quaternion rot = currentBurger.transform.rotation;
+        Debug.Log($"Swapping burger to {newPrefab.name} at position {pos}");
+        Destroy(currentBurger);
+        currentBurger = Instantiate(newPrefab, pos, rot);
+        currentBurger.tag = "Burger";
+    }
+
+    // State queries
+    public bool IsCooking() => state == State.Cooking;
+    public bool IsCooked() => state == State.Cooked;
+    public bool IsBurned() => state == State.Burned;
 }
