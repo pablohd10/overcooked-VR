@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 3812876574508226176}
   - component: {fileID: 8454709946081277255}
   - component: {fileID: 4809824859135743889}
+  - component: {fileID: 7856421416589290836}
+  - component: {fileID: 5820528164181186658}
   m_Layer: 0
   m_Name: Cabbage_Visual
-  m_TagString: Trashable
+  m_TagString: Cuttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,6 +207,41 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 1
+--- !u!65 &7856421416589290836
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812876574508226177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.92, y: 0.31, z: 0.86}
+  m_Center: {x: 0, y: 0.24, z: 0}
+--- !u!114 &5820528164181186658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812876574508226177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bf21c57a472f544a724de0f304a659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredCuts: 5
+  slicedPrefab: {fileID: 3812876574508226177, guid: 44b7e90f95929c04c8394768d8bd1d14, type: 3}
 --- !u!1 &8862008694120955738
 GameObject:
   m_ObjectHideFlags: 0

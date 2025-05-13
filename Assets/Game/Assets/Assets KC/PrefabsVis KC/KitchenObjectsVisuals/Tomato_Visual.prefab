@@ -42,9 +42,11 @@ GameObject:
   - component: {fileID: 3812876574508226176}
   - component: {fileID: 5269777698367027530}
   - component: {fileID: 2993397095991805547}
+  - component: {fileID: 8662382504834967537}
+  - component: {fileID: -680602710566935349}
   m_Layer: 0
   m_Name: Tomato_Visual
-  m_TagString: Trashable
+  m_TagString: Cuttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -236,6 +238,41 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 1
+--- !u!65 &8662382504834967537
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812876574508226177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.64, y: 0.57, z: 0.6}
+  m_Center: {x: 0, y: 0.28, z: 0}
+--- !u!114 &-680602710566935349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812876574508226177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bf21c57a472f544a724de0f304a659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredCuts: 5
+  slicedPrefab: {fileID: 3812876574508226177, guid: fb403d1efda6baf4190c507841617408, type: 3}
 --- !u!1001 &6808075614760819281
 PrefabInstance:
   m_ObjectHideFlags: 0

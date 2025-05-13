@@ -10,6 +10,8 @@ TagManager:
   - Food
   - StoveZone
   - Burger
+  - Knife
+  - Cuttable
   layers:
   - Default
   - TransparentFX
