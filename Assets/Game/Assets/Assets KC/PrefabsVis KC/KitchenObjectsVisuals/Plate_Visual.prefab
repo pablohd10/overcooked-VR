@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3812876574508226176}
   - component: {fileID: -2003022014178955685}
   - component: {fileID: -1903677775463645226}
+  - component: {fileID: 847039692083584912}
   m_Layer: 0
   m_Name: Plate_Visual
   m_TagString: Trashable
@@ -205,6 +206,20 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 1
+--- !u!114 &847039692083584912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812876574508226177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad439e97e49c7464ab0f5d233c6fc3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropClip: {fileID: 8300000, guid: 12ed63574b6f2424998691ef4ac2f9a7, type: 3}
+  impactVelocityThreshold: 1.5
 --- !u!1 &3972004311699119289
 GameObject:
   m_ObjectHideFlags: 0

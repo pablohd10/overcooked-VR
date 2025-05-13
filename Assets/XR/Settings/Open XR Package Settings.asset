@@ -33,7 +33,7 @@ MonoBehaviour:
   m_Name: iPhone
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 928860439610399171}
+  - {fileID: -717481174470969157}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -1149,24 +1149,24 @@ MonoBehaviour:
   m_Name: Standalone
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 4963040286616351577}
-  - {fileID: -8749980634715080836}
-  - {fileID: -1276894210230670667}
-  - {fileID: -4478006660784508864}
-  - {fileID: -6081641041439107477}
-  - {fileID: 32361891232910083}
-  - {fileID: 2497339995422133549}
-  - {fileID: -8732650259347650135}
-  - {fileID: -4647824206626811188}
-  - {fileID: -1028784285735575096}
-  - {fileID: 1507748248788215057}
-  - {fileID: 7413458854745118488}
-  - {fileID: -8316650401159007347}
-  - {fileID: -8895518590110429109}
-  - {fileID: -4731438336562001402}
-  - {fileID: 2316775424616146661}
-  - {fileID: -7494486358618572369}
-  - {fileID: 239522605376452086}
+  - {fileID: 1443452708213354362}
+  - {fileID: -1557233674024107270}
+  - {fileID: 1090619588433634010}
+  - {fileID: 3111240146763491600}
+  - {fileID: 2018598250006099132}
+  - {fileID: -822428605322779062}
+  - {fileID: 1727173055597128861}
+  - {fileID: 928296757526069075}
+  - {fileID: 3765040484554194935}
+  - {fileID: 6809063041609242827}
+  - {fileID: -2513858183220632965}
+  - {fileID: 6841333374066517713}
+  - {fileID: -4454024988132797082}
+  - {fileID: 4764258363597509302}
+  - {fileID: 4451366187881382638}
+  - {fileID: 4890582492822650874}
+  - {fileID: 2220871646205782247}
+  - {fileID: 6909940545837415790}
   m_renderMode: 0
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -1288,11 +1288,11 @@ MonoBehaviour:
   m_Name: XrPerformanceSettingsFeature VisionOS
   m_EditorClassIdentifier: 
   m_enabled: 0
-  nameUi: 
-  version: 
-  featureIdInternal: 
-  openxrExtensionStrings: 
-  company: 
+  nameUi: XR Performance Settings
+  version: 1.0.0
+  featureIdInternal: com.unity.openxr.feature.extension.performance_settings
+  openxrExtensionStrings: XR_EXT_performance_settings
+  company: Unity
   priority: 0
   required: 0
 --- !u!114 &-1557233674024107270
@@ -1601,22 +1601,22 @@ MonoBehaviour:
   m_Name: Android
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 7558681416710770871}
-  - {fileID: -7608755179541951601}
-  - {fileID: 3554264124859437666}
-  - {fileID: 8968387473496227895}
-  - {fileID: -7492839480718335507}
-  - {fileID: 9020184986697725232}
-  - {fileID: 7497383018830012468}
-  - {fileID: 1027242606257235352}
-  - {fileID: 7223869130901287869}
-  - {fileID: -3884623058556172510}
-  - {fileID: -5190053797094401786}
-  - {fileID: -6078868055869984845}
-  - {fileID: 4743943348186933471}
-  - {fileID: -6368128839055358620}
-  - {fileID: -7581625304019661375}
-  - {fileID: -1065019599540112960}
+  - {fileID: 8027805406080984226}
+  - {fileID: -6453387940331568191}
+  - {fileID: 820989249086654410}
+  - {fileID: 4844608793224994032}
+  - {fileID: 6485543472256203315}
+  - {fileID: -9218390744693264088}
+  - {fileID: 642709995567270956}
+  - {fileID: -947017983941162047}
+  - {fileID: 4237007573456698512}
+  - {fileID: 5818216748593011907}
+  - {fileID: -7975562614442254401}
+  - {fileID: -8550234616508769532}
+  - {fileID: 4932235626638013724}
+  - {fileID: -6735341729165282431}
+  - {fileID: 5804625991940617908}
+  - {fileID: 972577589439290091}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -2757,23 +2757,23 @@ MonoBehaviour:
   m_Name: WSA
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 5615779456155483332}
-  - {fileID: 5920893150716453460}
-  - {fileID: 8012316586893964101}
-  - {fileID: -2967445153770227824}
-  - {fileID: 7395246930525683441}
-  - {fileID: -5003507039333501607}
-  - {fileID: 8813252332802299265}
-  - {fileID: -6014373324310207921}
-  - {fileID: -1338225994441507084}
-  - {fileID: 5090238476212755868}
-  - {fileID: -1012347866618123985}
-  - {fileID: 5880669240810456545}
-  - {fileID: 5338854348249062746}
-  - {fileID: 6538960976437688825}
-  - {fileID: 4587900415963892366}
-  - {fileID: -4775620312178580079}
-  - {fileID: 3800816278614111459}
+  - {fileID: 3843418875820758935}
+  - {fileID: -5613651908678990993}
+  - {fileID: 5181506701204953648}
+  - {fileID: 3078150032045067779}
+  - {fileID: 7623091145920464723}
+  - {fileID: 2216829088450107664}
+  - {fileID: 7193801146512329865}
+  - {fileID: 9071325244721512562}
+  - {fileID: -4354109700479980361}
+  - {fileID: -783937676116119651}
+  - {fileID: -8135945614297748657}
+  - {fileID: -5026383593787993445}
+  - {fileID: 7168764584261136083}
+  - {fileID: 7855782447030917546}
+  - {fileID: 4218372366376848805}
+  - {fileID: 1709317205765542177}
+  - {fileID: 1761636144949163334}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -3719,7 +3719,7 @@ MonoBehaviour:
   m_Name: VisionOS
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 2111883505562756471}
+  - {fileID: -1853175166332363708}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
